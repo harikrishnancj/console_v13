@@ -128,7 +128,7 @@ def create_role_user_mapping(session_id: str, role_user_mapping: RoleUserMapping
         db=db, 
         role_user_mapping=role_user_mapping, 
         tenant_id=auth["tenant_id"],
-        user_id=auth["user_id"]
+        user_id=role_user_mapping.user_id
     )
     return wrap_response(data=result, message="Role user mapping created successfully")
 
