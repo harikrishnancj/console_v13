@@ -7,7 +7,7 @@ from app.router import tenantpurpose as tenantpurpose_router
 from app.router import market as market_router
 from app.router import userpurpose as userpurpose_router
 from app.router import getlink as getlink_router
-from app.router import productcreate as productcreate_router
+from app.router import superadmin as superadmin_router
 from app.core.database import engine, Base
 
 from .models import models
@@ -15,6 +15,10 @@ from .models import models
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Console API")
+
+@app.get("/")
+async def root():
+    return {"message": "Welcome to the Console API", "status": "running"}
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
@@ -42,4 +46,4 @@ app.include_router(tenantpurpose_router.router, tags=["Tenant Management"])
 app.include_router(market_router.router, tags=["Marketplace"])
 app.include_router(userpurpose_router.router, tags=["User Management"])
 app.include_router(getlink_router.router, tags=["Product Link"])
-app.include_router(productcreate_router.router, tags=["Product Management"])
+app.include_router(superadmin_router.router, prefix="/superadmin", tags=["Super Admin"])

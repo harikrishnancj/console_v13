@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from typing import Optional
 
 class TenantProductMapBase(BaseModel):
-    tenant_id: int
     product_id: int
 
 class TenantProductMapCreate(TenantProductMapBase):
@@ -11,6 +10,7 @@ class TenantProductMapCreate(TenantProductMapBase):
 
 class TenantProductMapInDBBase(TenantProductMapBase):
     id: int
+    tenant_id: int
 
     class Config:
         from_attributes = True

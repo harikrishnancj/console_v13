@@ -35,4 +35,3 @@ def get_user_endpoint(session_id: str, user_id: int, db: Session = Depends(get_d
     auth = get_session_identity(session_id)
     result = crud_get_user(db, user_id, auth["tenant_id"])
     return wrap_response(data=result, message="User details fetched successfully")
-

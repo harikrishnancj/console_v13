@@ -3,7 +3,6 @@ from typing import Optional
 
 class RoleBase(BaseModel):
     role_name: str
-    tenant_id: int
 
 class RoleCreate(RoleBase):
     pass
@@ -14,6 +13,7 @@ class RoleUpdate(RoleBase):
 
 class RoleInDBBase(RoleBase):
     role_id: int
+    tenant_id: int
 
     class Config:
         from_attributes = True
