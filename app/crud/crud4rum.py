@@ -4,13 +4,14 @@ from app.schemas.role_user_mapping import RoleUserMappingCreate
 from sqlalchemy.orm import Session
 from typing import Optional
 
-def create_role_user_mapping(db: Session, role_user_mapping: RoleUserMappingCreate, tenant_id: int):
+def create_role_user_mapping(db: Session, role_user_mapping: RoleUserMappingCreate, user_id: int, tenant_id: int):
     # Enforce tenant_id from session
     mapping_data = role_user_mapping.model_dump()
     mapping_data["tenant_id"] = tenant_id
+    mapping_data["user_id"] = user_id
     
     # Verify User exists in this Tenant
-    user = db.query(User).filter(User.user_id == mapping_data["user_id"], User.tenant_id == tenant_id).first()
+    user = db.query(User).filter(User.user_id == user_id, User.tenant_id == tenant_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found in this tenant")
         
@@ -21,7 +22,7 @@ def create_role_user_mapping(db: Session, role_user_mapping: RoleUserMappingCrea
 
     # Find existing mapping for this USER and TENANT
     existing_mapping = db.query(RoleUserMapping).filter(
-        RoleUserMapping.user_id == mapping_data["user_id"],
+        RoleUserMapping.user_id == user_id,
         RoleUserMapping.tenant_id == tenant_id
     ).first()
 

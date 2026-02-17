@@ -124,7 +124,12 @@ def delete_app_role_mapping(session_id: str, app_role_mapping_id: int, db: Sessi
 @router.post("/role_user_mappings", response_model=BaseResponse[RoleUserMappingInDBBase])
 def create_role_user_mapping(session_id: str, role_user_mapping: RoleUserMappingCreate, db: Session = Depends(get_db)):
     auth = get_session_identity(session_id)
-    result = role_user_mapping_crud.create_role_user_mapping(db=db, role_user_mapping=role_user_mapping, tenant_id=auth["tenant_id"])
+    result = role_user_mapping_crud.create_role_user_mapping(
+        db=db, 
+        role_user_mapping=role_user_mapping, 
+        tenant_id=auth["tenant_id"],
+        user_id=auth["user_id"]
+    )
     return wrap_response(data=result, message="Role user mapping created successfully")
 
 @router.get("/role_user_mappings", response_model=BaseResponse[List[RoleUserMappingInDBBase]])

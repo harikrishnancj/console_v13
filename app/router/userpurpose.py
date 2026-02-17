@@ -23,15 +23,15 @@ def get_user_products_endpoint(
     return wrap_response(data=result, message="User products fetched successfully")
 
 @router.put("/update-user")
-def update_user_endpoint(session_id: str, user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
+def update_user_endpoint(session_id: str, user: UserUpdate, db: Session = Depends(get_db)):
     auth = get_session_identity(session_id)
-    result = crud_update_user(db, user_id, user, auth["tenant_id"])
+    result = crud_update_user(db, auth["user_id"], user, auth["tenant_id"])
     if not result:
         raise HTTPException(status_code=404, detail="User not found")
     return wrap_response(data=result, message="User updated successfully")
 
 @router.get("/get-user")
-def get_user_endpoint(session_id: str, user_id: int, db: Session = Depends(get_db)):
+def get_user_endpoint(session_id: str, db: Session = Depends(get_db)):
     auth = get_session_identity(session_id)
-    result = crud_get_user(db, user_id, auth["tenant_id"])
+    result = crud_get_user(db, auth["user_id"], auth["tenant_id"])
     return wrap_response(data=result, message="User details fetched successfully")
